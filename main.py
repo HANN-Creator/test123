@@ -37,7 +37,7 @@ def generate_gemini_image(title, content):
     f"Do not include any text, captions, letters, or visible writing in the image. Only generate the illustration itself, with no words.")
     try:
         response = client.models.generate_content(
-            model="models/gemini-1.5-pro-latest",
+            model="gemini-2.0-flash-preview-image-generation",
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE', 'TEXT']
