@@ -8,15 +8,10 @@ import os
 import uuid
 
 # ---- [1] GCP 서비스 계정 키 환경변수(문자열) → 임시 파일로 저장 ----
-json_data = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
-if json_data:
-    # Vercel/클라우드 환경에서는 환경변수에서 받은 JSON 키를 임시 파일로 저장
-    with open("/tmp/gcp_key.json", "w") as f:
-        f.write(json_data)
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/gcp_key.json"
-
-# ---- [2] Gemini API 키 환경변수 (꼭 시크릿으로 관리) ----
-API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_DEFAULT_API_KEY")
+API_KEY = os.getenv("GEMINI_API_KEY")
+if not API_KEY:
+    # 환경 변수가 설정되지 않았을 경우, 시작 시 오류 발생
+    raise ValueError("GEMINI_API_KEY 환경 변수가 설정되지 않았습니다. Cloud Run 환경 변수에 추가해주세요.")
 client = genai.Client(api_key=API_KEY)
 
 # ---- [3] GCS 버킷 정보 ----
